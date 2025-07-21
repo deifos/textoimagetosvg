@@ -4,10 +4,11 @@ import { useState, useCallback, useEffect } from "react";
 import { PromptInput } from "@/components/prompt-input";
 import { ImageDisplay } from "@/components/image-display";
 import { SVGConverter } from "@/components/svg-converter";
+import { Gallery } from "@/components/gallery";
 import { generateImage, convertToSVG } from "@/lib/fal-service";
+import { saveGalleryItem } from "@/lib/gallery-storage";
 import type { AppState, GeneratedImage, SVGResult } from "@/lib/types";
 import { CheckCircle, AlertCircle, Info } from "lucide-react";
-import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 export default function ImageGenerationApp() {
   // Comprehensive state management for the application
@@ -42,6 +43,9 @@ export default function ImageGenerationApp() {
     generation: 'idle',
     conversion: 'idle'
   });
+
+  // Gallery refresh trigger
+  const [_galleryRefresh, setGalleryRefresh] = useState(0);
 
   // Auto-hide notification after 3 seconds
   useEffect(() => {
@@ -116,13 +120,27 @@ export default function ImageGenerationApp() {
       );
 
       if (result.success && result.data) {
+        const generatedImage = result.data as GeneratedImage;
         setState(prev => ({
           ...prev,
           isGenerating: false,
-          generatedImage: result.data as GeneratedImage,
+          generatedImage,
           generationError: null,
         }));
         setProgressStatus(prev => ({ ...prev, generation: 'completed' }));
+        
+        // Save generated image to gallery
+        try {
+          saveGalleryItem({
+            type: 'image',
+            url: generatedImage.url,
+            prompt: trimmedPrompt,
+          });
+          setGalleryRefresh(prev => prev + 1);
+        } catch (error) {
+          console.error('Error saving image to gallery:', error);
+        }
+        
         showNotification('success', 'Image generated successfully! You can now convert it to SVG.');
       } else {
         setState(prev => ({
@@ -183,13 +201,27 @@ export default function ImageGenerationApp() {
       );
 
       if (result.success && result.data) {
+        const svgResult = result.data as SVGResult;
         setState(prev => ({
           ...prev,
           isConverting: false,
-          svgResult: result.data as SVGResult,
+          svgResult,
           conversionError: null,
         }));
         setProgressStatus(prev => ({ ...prev, conversion: 'completed' }));
+        
+        // Save SVG to gallery
+        try {
+          saveGalleryItem({
+            type: 'svg',
+            url: svgResult.url,
+            prompt: state.prompt.trim(),
+          });
+          setGalleryRefresh(prev => prev + 1);
+        } catch (error) {
+          console.error('Error saving SVG to gallery:', error);
+        }
+        
         showNotification('success', 'SVG conversion completed successfully! You can download it now.');
       } else {
         setState(prev => ({
@@ -410,6 +442,11 @@ export default function ImageGenerationApp() {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Gallery Section */}
+        <div className="mt-8">
+          <Gallery onRefresh={() => setGalleryRefresh(prev => prev + 1)} />
         </div>
       </main>
 
