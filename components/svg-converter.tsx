@@ -237,7 +237,7 @@ export function SVGConverter({
         <div className="space-y-4">
           {/* Enhanced responsive SVG preview with better display */}
           <div className="relative overflow-hidden rounded-lg border bg-white group">
-            <div className="w-full min-h-[200px] max-h-[350px] sm:max-h-[400px] lg:max-h-[450px] flex items-center justify-center p-4">
+            <div className="relative w-full min-h-[200px] max-h-[400px] sm:max-h-[500px] lg:max-h-[600px]">
               {/* SVG preview with proper responsive scaling */}
               <div className="w-full h-full flex items-center justify-center">
                 {/* eslint-disable-next-line @next/next/no-img-element */}

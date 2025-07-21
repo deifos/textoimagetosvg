@@ -99,7 +99,7 @@ export function ImageDisplay({
               <div className="absolute inset-0 bg-black/0 hover:bg-black/10 transition-colors duration-200 flex items-end opacity-0 group-hover:opacity-100 md:opacity-0 md:group-hover:opacity-100">
                 <div className="w-full p-3 bg-gradient-to-t from-black/60 to-transparent">
                   <div className="text-white text-xs space-y-1">
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1">
+                    <div className="flex justify-between items-center">
                       <span>Dimensions: {imageData.width} × {imageData.height}</span>
                       <span>Format: {imageData.content_type.split('/')[1]?.toUpperCase()}</span>
                     </div>
@@ -115,34 +115,31 @@ export function ImageDisplay({
               </div>
             </div>
 
-            {/* Enhanced metadata display with more information */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-sm">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <span className="font-medium">Size:</span>
-                    <span>{imageData.width} × {imageData.height} pixels</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <span className="font-medium">Format:</span>
-                    <span className="uppercase">{imageData.content_type.split('/')[1] || 'Unknown'}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <span className="font-medium">Aspect Ratio:</span>
-                    <span>{(imageData.width / imageData.height).toFixed(2)}:1</span>
-                  </div>
+            {/* Enhanced metadata display with more information - standardized with svg-converter */}
+            <div className="space-y-3">
+              <div className="text-xs text-muted-foreground space-y-1">
+                <div className="flex justify-between">
+                  <span className="font-medium">Size:</span>
+                  <span>{imageData.width} × {imageData.height} pixels</span>
                 </div>
-                
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleDownload}
-                  className="flex items-center gap-2 hover:bg-primary hover:text-primary-foreground transition-colors"
-                >
-                  <Download className="h-4 w-4" />
-                  Download
-                </Button>
+                <div className="flex justify-between">
+                  <span className="font-medium">Format:</span>
+                  <span className="uppercase">{imageData.content_type.split('/')[1] || 'Unknown'}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="font-medium">Aspect Ratio:</span>
+                  <span>{(imageData.width / imageData.height).toFixed(2)}:1</span>
+                </div>
               </div>
+              
+              <Button
+                variant="outline"
+                onClick={handleDownload}
+                className="w-full flex items-center gap-2 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] hover:bg-primary hover:text-primary-foreground"
+              >
+                <Download className="h-4 w-4" />
+                Download Image
+              </Button>
             </div>
           </div>
         )}
