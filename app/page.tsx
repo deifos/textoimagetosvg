@@ -344,7 +344,7 @@ export default function ImageGenerationApp() {
       </header>
 
       {/* Main Content - Enhanced Three Column Responsive Layout */}
-      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
+      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 auto-rows-fr">
           {/* Column 1: Prompt Input */}
           <div className="space-y-4 md:space-y-6 order-1">
