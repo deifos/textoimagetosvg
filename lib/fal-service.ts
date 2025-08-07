@@ -114,7 +114,7 @@ export async function generateImage(
 ): Promise<ImageGenerationResult> {
   try {
     // Add the style reference to the prompt as specified in requirements
-    const enhancedPrompt = `${params.prompt} in this style`;
+    const enhancedPrompt = `${params.prompt} in this style whit a white background`;
 
     const requestParams = {
       prompt: enhancedPrompt,
